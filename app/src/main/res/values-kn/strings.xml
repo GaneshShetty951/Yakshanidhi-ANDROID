@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ಯಕ್ಷನಿಧಿ</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="email_card">ಇ-ಮೇಲ್ ವಿಳಾಸ</string>
+    <string name="contact_card">ದೂರವಾಣಿ ಸಂಖ್ಯೆ ಇಲ್ಲಿ ಇರುತ್ತದೆ</string>
+    <string name="address_card">ಗ್ರಾಮ\nತಾಲೂಕು\nಜಿಲ್ಲೆ\nಪಿನ್ ಕೋಡ್</string>
+    <string name="title">ಯಕ್ಷನಿಧಿ</string>
+    <string name="prasangha_name">ಪ್ರಸಂಗದ ಹೆಸರು</string>
+    <string name="language">Choose your language</string>
+    <string name="english">English</string>
+    <string name="select">Done</string>
+</resources>

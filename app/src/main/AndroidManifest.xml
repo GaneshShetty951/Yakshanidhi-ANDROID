@@ -3,6 +3,7 @@
     package="com.example.ganeshshetty.yakshanidhi">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/yakshanidhi"
@@ -11,6 +12,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".Flash_Activity"
+            android:configChanges="locale|orientation"
+            android:label="@string/app_name"
             android:theme="@style/Theme.Design.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,8 +23,16 @@
         </activity>
         <activity
             android:name=".MainActivity"
+            android:configChanges="locale|orientation"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Details.MelaDetailActivity"
+            android:configChanges="locale|orientation" />
+        <activity
+            android:name=".Details.PrasanghaDetailActivity"
+            android:configChanges="locale|orientation" />
+        <activity android:name=".Details.ArtistDetailActivity"></activity>
     </application>
 
 </manifest>

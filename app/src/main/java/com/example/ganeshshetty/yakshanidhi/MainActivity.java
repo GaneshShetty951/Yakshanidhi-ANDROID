@@ -4,10 +4,12 @@ package com.example.ganeshshetty.yakshanidhi;
  */
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,15 +19,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+import com.example.ganeshshetty.yakshanidhi.Fragments.ArtistFragment;
+import com.example.ganeshshetty.yakshanidhi.Fragments.MelaFragment;
+import com.example.ganeshshetty.yakshanidhi.Fragments.PrasanghaFragment;
+
+import java.util.Locale;
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     NavigationView navigationView=null;
     Toolbar toolbar=null;
+    Bundle savedInstanceState;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.savedInstanceState=savedInstanceState;
         setContentView(R.layout.activity_main);
 
         // Setting initial fragment
@@ -35,6 +45,8 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.commit();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        setTitle(getResources().getString(R.string.app_name));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -98,23 +110,23 @@ public class MainActivity extends AppCompatActivity
             FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container,melaFragment);
             fragmentTransaction.commit();
-        } else if (id == R.id.nav_gallery) {
-            MelaFragment melaFragment=new MelaFragment();
-            FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container,melaFragment);
-            fragmentTransaction.commit();
-
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_prasangha) {
             PrasanghaFragment prasanghaFragment=new PrasanghaFragment();
             FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container,prasanghaFragment);
             fragmentTransaction.commit();
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_kalavidaru) {
+            ArtistFragment artistFragment=new ArtistFragment();
+            FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container,artistFragment);
+            fragmentTransaction.commit();
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_pradarshana) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_kannada) {
+
+        } else if (id == R.id.nav_english) {
 
         }
 
@@ -122,4 +134,5 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

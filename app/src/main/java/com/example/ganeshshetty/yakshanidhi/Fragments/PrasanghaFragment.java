@@ -1,4 +1,4 @@
-package com.example.ganeshshetty.yakshanidhi;
+package com.example.ganeshshetty.yakshanidhi.Fragments;
 
 
 import android.os.AsyncTask;
@@ -12,6 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.example.ganeshshetty.yakshanidhi.Adapters.PrasanghaAdapter;
+import com.example.ganeshshetty.yakshanidhi.ItemClickListener.PrasanghaOnItemClickListener;
+import com.example.ganeshshetty.yakshanidhi.Model.Prasangha_class;
+import com.example.ganeshshetty.yakshanidhi.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,14 +33,13 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MelaFragment extends Fragment {
+public class PrasanghaFragment extends Fragment {
     private static final String TAG = "RecyclerViewExample";
-    private List<Mela_class> feedsList;
+    private List<Prasangha_class> prasangha_classList;
     private RecyclerView mRecyclerView;
-    private MyRecyclerViewAdapter adapter;
+    private PrasanghaAdapter adapter;
     private ProgressBar progressBar;
-
-    public MelaFragment() {
+    public PrasanghaFragment() {
         // Required empty public constructor
     }
 
@@ -43,13 +47,12 @@ public class MelaFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_mela, container, false);
+        View view = inflater.inflate(R.layout.fragment_prasangha, container, false);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         progressBar = (ProgressBar)view.findViewById(R.id.progress_bar);
 
-
-        String url = "http://192.168.43.43/api/v1/mela";
+        String url = "http://192.168.0.101/api/v1/prasangha";
         new DownloadTask().execute(url);
 
         return view;
@@ -94,14 +97,14 @@ public class MelaFragment extends Fragment {
             progressBar.setVisibility(View.GONE);
 
             if (result == 1) {
-                adapter = new MyRecyclerViewAdapter(getContext(), feedsList);
-                adapter.setOnItemClickListener(new OnItemClickListener() {
+                adapter = new PrasanghaAdapter(getContext(), prasangha_classList);
+                mRecyclerView.setAdapter(adapter);
+                adapter.setPrasanghaOnItemClickListener(new PrasanghaOnItemClickListener() {
                     @Override
-                    public void onItemClick(Mela_class item) {
-                        
+                    public void onItemClick(Prasangha_class item) {
+
                     }
                 });
-                mRecyclerView.setAdapter(adapter);
             } else {
                 Toast.makeText(getContext(), "Failed to fetch data!", Toast.LENGTH_SHORT).show();
             }
@@ -112,17 +115,19 @@ public class MelaFragment extends Fragment {
         try {
             JSONObject response = new JSONObject(result);
             JSONArray posts = response.optJSONArray("posts");
-            feedsList = new ArrayList<>();
+            prasangha_classList = new ArrayList<>();
 
             for (int i = 0; i < posts.length(); i++) {
                 JSONObject post = posts.optJSONObject(i);
-                Mela_class item = new Mela_class();
-                item.setTitle(post.optString("mela_name"));
-                item.setThumbnail(post.optString("mela_pic"));
-                feedsList.add(item);
+                Prasangha_class item = new Prasangha_class();
+                item.setName(post.optString("prasangha_name"));
+                item.setAuthor(post.optString("prasangha_author"));
+                item.setYear(post.optInt("prasangha_year"));
+                prasangha_classList.add(item);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
 }

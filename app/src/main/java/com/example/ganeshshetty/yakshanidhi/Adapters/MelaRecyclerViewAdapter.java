@@ -1,4 +1,4 @@
-package com.example.ganeshshetty.yakshanidhi;
+package com.example.ganeshshetty.yakshanidhi.Adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.ganeshshetty.yakshanidhi.Model.Mela_class;
+import com.example.ganeshshetty.yakshanidhi.ItemClickListener.MelaOnItemClickListener;
+import com.example.ganeshshetty.yakshanidhi.R;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 
@@ -16,19 +20,19 @@ import java.util.List;
  * Created by Nilanchala Panigrahy on 10/25/16.
  */
 
-public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.CustomViewHolder> {
+public class MelaRecyclerViewAdapter extends RecyclerView.Adapter<MelaRecyclerViewAdapter.CustomViewHolder> {
     private List<Mela_class> melaclassList;
     private Context mContext;
-    private OnItemClickListener onItemClickListener;
+    private MelaOnItemClickListener melaOnItemClickListener;
 
-    public MyRecyclerViewAdapter(Context context, List<Mela_class> melaclassList) {
+    public MelaRecyclerViewAdapter(Context context, List<Mela_class> melaclassList) {
         this.melaclassList = melaclassList;
         this.mContext = context;
     }
 
     @Override
     public CustomViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_row, null);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_row_mela, null);
         CustomViewHolder viewHolder = new CustomViewHolder(view);
         return viewHolder;
     }
@@ -46,13 +50,13 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         }
 
         //Setting text view title
-        customViewHolder.textView.setText(Html.fromHtml(melaclass.getTitle()));
+        customViewHolder.textView.setText(Html.fromHtml(melaclass.getName()));
 
 
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemClickListener.onItemClick(melaclass);
+                melaOnItemClickListener.onItemClick(melaclass);
             }
         };
         customViewHolder.imageView.setOnClickListener(listener);
@@ -77,11 +81,11 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     }
 
 
-    public OnItemClickListener getOnItemClickListener() {
-        return onItemClickListener;
+    public MelaOnItemClickListener getMelaOnItemClickListener() {
+        return melaOnItemClickListener;
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
+    public void setMelaOnItemClickListener(MelaOnItemClickListener melaOnItemClickListener) {
+        this.melaOnItemClickListener = melaOnItemClickListener;
     }
 }

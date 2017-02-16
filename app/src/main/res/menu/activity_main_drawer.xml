@@ -7,29 +7,29 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="Mela" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_prasangha"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:title="Prasangha" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_kalavidaru"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:title="Artist" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_pradarshana"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:title="Show" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Language">
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/nav_kannada"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:title="ಕನ್ನಡ" />
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/nav_english"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:title="English" />
         </menu>
     </item>
 

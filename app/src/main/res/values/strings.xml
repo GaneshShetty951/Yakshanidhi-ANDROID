@@ -8,4 +8,13 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="email_card">Email Address Will be here</string>
+    <string name="contact_card">Contact No will be here</string>
+    <string name="address_card">VILLAGE\nTALUK\nDISTRICT\nPINCODE</string>
+    <string name="title">Yakshanidhi</string>
+    <string name="prasangha_name">Prasangha Name</string>
+    <string name="language">Choose your language</string>
+    <string name="kannada">ಕನ್ನಡ</string>
+    <string name="english">English</string>
+    <string name="select">Done</string>
 </resources>

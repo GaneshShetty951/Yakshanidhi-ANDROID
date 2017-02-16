@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_mela"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="ಮೇಳ" />
+        <item
+            android:id="@+id/nav_prasangha"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="ಪ್ರಸಂಗ" />
+        <item
+            android:id="@+id/nav_kalavidaru"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="ಕಲಾವಿದರು" />
+        <item
+            android:id="@+id/nav_pradarshana"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="ಪ್ರದರ್ಶನ" />
+    </group>
+
+    <item android:title="ಭಾಷೆ">
+        <menu>
+            <item
+                android:id="@+id/nav_kannada"
+                android:icon="@drawable/ic_menu_share"
+                android:title="ಕನ್ನಡ" />
+            <item
+                android:id="@+id/nav_english"
+                android:icon="@drawable/ic_menu_send"
+                android:title="English" />
+        </menu>
+    </item>
+</menu>
