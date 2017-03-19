@@ -23,9 +23,9 @@
                 android:id="@+id/bgheader"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@drawable/flash"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
-                android:background="@drawable/flash"
                 app:layout_collapseMode="pin" />
 
             <android.support.v7.widget.Toolbar
@@ -64,10 +64,10 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingLeft="20dp"
                         android:text="Email Id"
                         android:textSize="20dp"
                         android:textStyle="bold"
-                        android:paddingLeft="20dp"
                         />
                     <View
                         android:layout_width="match_parent"
@@ -76,9 +76,9 @@
                         />
 
                     <TextView
+                        android:id="@+id/email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/email"
                         android:padding="10dp"
                         android:text="@string/email_card"
                         android:textColor="@color/text_color" />
@@ -89,8 +89,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
                 android:paddingTop="10dp">
 
                 <LinearLayout
@@ -101,10 +101,10 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingLeft="20dp"
                         android:text="Contact No"
                         android:textSize="20dp"
                         android:textStyle="bold"
-                        android:paddingLeft="20dp"
                         />
                     <View
                         android:layout_width="match_parent"
@@ -113,9 +113,9 @@
                         />
 
                     <TextView
+                        android:id="@+id/contact"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/contact"
                         android:padding="10dp"
                         android:text="@string/contact_card"
                         android:textColor="@color/text_color" />
@@ -125,8 +125,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
                 android:paddingTop="10dp">
 
                 <LinearLayout
@@ -137,23 +137,23 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingLeft="20dp"
                         android:text="Address"
                         android:textSize="20dp"
                         android:textStyle="bold"
-                        android:paddingLeft="20dp"
                         />
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#357eec"
                         android:layout_margin="5dp"
+                        android:background="#357eec"
                         android:padding="20dp"
                         />
 
                     <TextView
+                        android:id="@+id/address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/address"
                         android:padding="10dp"
                         android:text="@string/address_card"
                         android:textColor="@color/text_color" />

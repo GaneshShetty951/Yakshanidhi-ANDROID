@@ -5,17 +5,17 @@ package com.example.ganeshshetty.yakshanidhi;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.ganeshshetty.yakshanidhi.authorisation.LoginActivity;
 
 import java.util.Locale;
 
@@ -67,6 +67,12 @@ public class Flash_Activity extends Activity {
 
 
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
     public void setLanguage(String language_code)
     {
         Locale locale = new Locale(language_code);
@@ -75,7 +81,7 @@ public class Flash_Activity extends Activity {
         config.locale = locale;
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
 
-        Intent mainIntent = new Intent(Flash_Activity.this, MainActivity.class);
+        Intent mainIntent = new Intent(Flash_Activity.this, LoginActivity.class);
         startActivity(mainIntent);
         finish();
     }

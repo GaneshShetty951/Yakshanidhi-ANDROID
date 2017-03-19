@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/cardview_dark_background"
-    tools:context="com.example.ganeshshetty.yakshanidhi.Fragments.MelaFragment">
+    tools:context="com.example.ganeshshetty.yakshanidhi.fragments.MelaFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"

@@ -3,14 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context="com.example.ganeshshetty.yakshanidhi.Fragments.PrasanghaFragment">
+    tools:context="com.example.ganeshshetty.yakshanidhi.fragments.PrasanghaFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="60dp"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"
+        android:paddingBottom="10dp"
+        android:paddingTop="60dp" />
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
