@@ -6,7 +6,11 @@
 
     <string name="action_settings">Settings</string>
 
-    <string name="url">http://192.168.0.101</string>
+    <string name="url">http://192.168.0.102</string>
+    <string name="facebook_app_id">1381892598530208</string>
+
+    <string name="fb_login_protocol_scheme">fb1381892598530208</string>
+    <string name="server_client_id">1009097919953-j4rvqtb6f9ggae4et8fvdgjpf1iq1h3o.apps.googleusercontent.com</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

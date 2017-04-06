@@ -19,9 +19,10 @@ public class SessionManager extends Activity {
     // Email address (make variable public to access from outside)
     public static final String KEY_EMAIL = "email";
     // Sharedpref file name
-    private static final String PREF_NAME = "edminglePref";
+    private static final String PREF_NAME = "yakshanidhiPref";
     // All Shared Preferences Keys
     private static final String IS_LOGIN = "IsLoggedIn";
+    private static final String USER_LANG="language";
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     private static SessionManager sessionManager = new SessionManager();
@@ -124,7 +125,7 @@ public class SessionManager extends Activity {
         editor.commit();
 
         // After logout redirect user to Login Activity
-        Intent i = new Intent(_context, MainActivity.class);
+        Intent i = new Intent(_context, LoginActivity.class);
         // Closing all the Activities
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
@@ -144,4 +145,20 @@ public class SessionManager extends Activity {
         return pref.getBoolean(IS_LOGIN, false);
     }
 
+    public void setUserLang(String lang_code)
+    {
+        editor.putString(USER_LANG,lang_code);
+        editor.commit();
+    }
+    public String getUserLang()
+    {
+        return pref.getString(USER_LANG,"kn");
+    }
+    public boolean isUserLangSet()
+    {
+        if(pref.getString(USER_LANG,"not").equalsIgnoreCase("not"))
+            return false;
+        else
+            return true;
+    }
 }

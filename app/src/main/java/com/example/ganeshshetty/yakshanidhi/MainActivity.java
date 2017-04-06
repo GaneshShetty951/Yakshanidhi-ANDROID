@@ -17,12 +17,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.ganeshshetty.yakshanidhi.authorisation.SessionManager;
 import com.example.ganeshshetty.yakshanidhi.fragments.ArtistFragment;
 import com.example.ganeshshetty.yakshanidhi.fragments.MelaFragment;
 import com.example.ganeshshetty.yakshanidhi.fragments.PrasanghaFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
+    private final SessionManager session = SessionManager.getInstance();
     NavigationView navigationView=null;
     Toolbar toolbar=null;
     Bundle savedInstanceState;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         this.savedInstanceState=savedInstanceState;
         setContentView(R.layout.activity_main);
+        session.setContext(getApplicationContext());
 
         // Setting initial fragment
         MelaFragment melaFragment=new MelaFragment();
@@ -122,6 +124,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         } else if (id == R.id.nav_english) {
 
+        }else if(id==R.id.logout)
+        {
+            session.logoutUser();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -12,7 +12,7 @@
         android:orientation="vertical"
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
-        android:paddingTop="56dp">
+        android:paddingTop="25dp">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -63,12 +63,23 @@
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_signup"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="10dp"
             android:background="@color/colorAccent"
-            android:padding="12dp"
+            android:padding="10dp"
             android:text="SIGN UP" />
+        <com.facebook.login.widget.LoginButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/fb_login"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_marginBottom="10dp"/>
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/link_signup"

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "653711323271",
+    "project_id": "yakshanidhi-android"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:653711323271:android:02de9d4b5c6cfa2a",
+        "android_client_info": {
+          "package_name": "com.example.ganeshshetty.yakshanidhi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "653711323271-lvfc2mve3emjf5d3jsa33h0vb70ho59p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ganeshshetty.yakshanidhi",
+            "certificate_hash": "09103e43a500a3f447f3735520f436977e9db96b"
+          }
+        },
+        {
+          "client_id": "653711323271-q27ttliq1qcm39j0bkaabc8n9fmqvk3g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaM-WQ0sEqP6Hz2FYqaIotp98fRWYwz2M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

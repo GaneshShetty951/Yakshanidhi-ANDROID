@@ -32,5 +32,11 @@
                 android:title="English" />
         </menu>
     </item>
+    <group>
+        <item
+            android:id="@+id/logout"
+            android:title="Log Out"
+            android:icon="@drawable/logout"/>
+    </group>
 
 </menu>

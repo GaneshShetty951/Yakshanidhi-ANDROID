@@ -16,15 +16,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ganeshshetty.yakshanidhi.authorisation.LoginActivity;
+import com.example.ganeshshetty.yakshanidhi.authorisation.SessionManager;
 
 import java.util.Locale;
 
 public class Flash_Activity extends Activity {
     private int SPLASH_TIME_OUT = 3000;
+    private SessionManager session=SessionManager.getInstance();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flash_);
+        session.setContext(getApplicationContext());
         new Handler().postDelayed(new Runnable() {
 
             /*
@@ -36,36 +39,38 @@ public class Flash_Activity extends Activity {
             public void run() {
                 // This method will be executed once the timer is over
                 // Start your app main activity
-
-                final Dialog dialog = new Dialog(Flash_Activity.this);
-                // Include dialog.xml file
-                dialog.setContentView(R.layout.languagedialog);
-                // Set dialog title
-                dialog.setTitle("User Language");
-                // set values for custom dialog components - text, image and button
-                TextView text = (TextView) dialog.findViewById(R.id.title);
-                final RadioButton radiokannada=(RadioButton)dialog.findViewById(R.id.kannada);
-                final RadioButton radioenglish=(RadioButton)dialog.findViewById(R.id.english);
-                dialog.show();
-                Button done = (Button) dialog.findViewById(R.id.done_button);
-                // if done button is clicked, close the custom dialog
-                done.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(radiokannada.isChecked()==true){
-                            setLanguage("kn");
-                        }else if(radioenglish.isChecked()==true)
-                        {
-                            setLanguage("en");
-                        }else {
-                            Toast.makeText(Flash_Activity.this, "Select any one of the language", Toast.LENGTH_LONG).show();
+                if(!session.isUserLangSet()) {
+                    final Dialog dialog = new Dialog(Flash_Activity.this);
+                    // Include dialog.xml file
+                    dialog.setContentView(R.layout.languagedialog);
+                    // Set dialog title
+                    dialog.setTitle("User Language");
+                    // set values for custom dialog components - text, image and button
+                    TextView text = (TextView) dialog.findViewById(R.id.title);
+                    final RadioButton radiokannada = (RadioButton) dialog.findViewById(R.id.kannada);
+                    final RadioButton radioenglish = (RadioButton) dialog.findViewById(R.id.english);
+                    dialog.show();
+                    Button done = (Button) dialog.findViewById(R.id.done_button);
+                    // if done button is clicked, close the custom dialog
+                    done.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (radiokannada.isChecked() == true) {
+                                session.setUserLang("kn");
+                                setLanguage("kn");
+                            } else if (radioenglish.isChecked() == true) {
+                                session.setUserLang("en");
+                                setLanguage("en");
+                            } else {
+                                Toast.makeText(Flash_Activity.this, "Select any one of the language", Toast.LENGTH_LONG).show();
+                            }
                         }
-                    }
-                });
+                    });
+                }else{
+                    setLanguage(session.getUserLang());
+                }
             }
         }, SPLASH_TIME_OUT);
-
-
     }
 
     @Override
@@ -80,9 +85,14 @@ public class Flash_Activity extends Activity {
         Configuration config = new Configuration();
         config.locale = locale;
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-
-        Intent mainIntent = new Intent(Flash_Activity.this, LoginActivity.class);
-        startActivity(mainIntent);
-        finish();
+        if(session.isLoggedIn()) {
+            Intent mainIntent = new Intent(Flash_Activity.this, MainActivity.class);
+            startActivity(mainIntent);
+            finish();
+        }else{
+            Intent mainIntent = new Intent(Flash_Activity.this, LoginActivity.class);
+            startActivity(mainIntent);
+            finish();
+        }
     }
 }
