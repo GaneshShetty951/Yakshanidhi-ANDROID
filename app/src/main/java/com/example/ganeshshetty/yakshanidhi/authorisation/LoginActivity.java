@@ -102,6 +102,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         googleSignInButton.setOnClickListener(LoginActivity.this);
 
+        fbLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                setFacebookData(loginResult);
+                Log.i("result","success");
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+
+            }
+        });
 
         fbLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,17 +129,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             @Override
                             public void onSuccess(LoginResult loginResult) {
                                 setFacebookData(loginResult);
-
+                                Log.i("result","success");
                             }
 
                             @Override
                             public void onCancel() {
-                                // App code
+                                Log.i("Exception","cancelled");
                             }
 
                             @Override
                             public void onError(FacebookException exception) {
                                 // App code
+                                Log.i("Exception",exception.getMessage());
                             }
                         });
 

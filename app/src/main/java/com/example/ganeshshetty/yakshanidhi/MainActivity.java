@@ -21,6 +21,7 @@ import com.example.ganeshshetty.yakshanidhi.authorisation.SessionManager;
 import com.example.ganeshshetty.yakshanidhi.fragments.ArtistFragment;
 import com.example.ganeshshetty.yakshanidhi.fragments.MelaFragment;
 import com.example.ganeshshetty.yakshanidhi.fragments.PrasanghaFragment;
+import com.example.ganeshshetty.yakshanidhi.fragments.ShowFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private final SessionManager session = SessionManager.getInstance();
@@ -88,9 +89,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -119,6 +118,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragmentTransaction.commit();
 
         } else if (id == R.id.nav_pradarshana) {
+            ShowFragment showFragment=new ShowFragment();
+            FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container,showFragment);
+            fragmentTransaction.commit();
 
         } else if (id == R.id.nav_kannada) {
 

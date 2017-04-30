@@ -46,7 +46,6 @@ public class PrasanghaAdapter extends RecyclerView.Adapter<PrasanghaAdapter.Cust
                 prasanghaOnItemClickListener.onItemClick(prasangha_class);
             }
         };
-
         holder.nameView.setOnClickListener(listener);
     }
 

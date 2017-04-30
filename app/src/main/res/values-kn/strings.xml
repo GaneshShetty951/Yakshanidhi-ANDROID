@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ಯಕ್ಷನಿಧಿ</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
-
+    <string name="url">http://192.168.0.101</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="email_card">ಇ-ಮೇಲ್ ವಿಳಾಸ</string>
@@ -22,4 +21,8 @@
     <string name="artist_place">Artist Place</string>
     <string name="division_name">Division Name</string>
     <string name="android_studio_android_com">contact.us@yakshanidhi.com</string>
+    <string name="search">Search</string>
+    <string name="email">ಇ-ಮೇಲ್</string>
+    <string name="contact_no">ದೂರವಾಣಿ ಸಂಖ್</string>
+    <string name="address">ವಿಳಾಸ</string>
 </resources>
