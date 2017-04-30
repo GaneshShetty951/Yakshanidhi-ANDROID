@@ -1,6 +1,7 @@
 package com.example.ganeshshetty.yakshanidhi.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -9,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.ganeshshetty.yakshanidhi.R;
-import com.example.ganeshshetty.yakshanidhi.itemclicklistener.PrasanghaOnItemClickListener;
+import com.example.ganeshshetty.yakshanidhi.details.PrasanghaDetailActivity;
 import com.example.ganeshshetty.yakshanidhi.model.Prasangha_class;
 
 import java.util.List;
@@ -21,7 +22,6 @@ import java.util.List;
 public class PrasanghaAdapter extends RecyclerView.Adapter<PrasanghaAdapter.CustomViewHolder> {
     private List<Prasangha_class> prasangha_list;
     private Context pContext;
-    private PrasanghaOnItemClickListener prasanghaOnItemClickListener;
     public PrasanghaAdapter(Context context, List<Prasangha_class> prasangha_classList) {
         this.pContext=context;
         this.prasangha_list=prasangha_classList;
@@ -40,13 +40,14 @@ public class PrasanghaAdapter extends RecyclerView.Adapter<PrasanghaAdapter.Cust
 
         holder.nameView.setText(Html.fromHtml(prasangha_class.getName()));
         holder.yearView.setText(Html.fromHtml(" "+prasangha_class.getYear()));
-        View.OnClickListener listener = new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                prasanghaOnItemClickListener.onItemClick(prasangha_class);
+                Intent mainIntent = new Intent(pContext, PrasanghaDetailActivity.class);
+                mainIntent.putExtra("Prasangha_model", prasangha_class);
+                pContext.startActivity(mainIntent);
             }
-        };
-        holder.nameView.setOnClickListener(listener);
+        });
     }
 
 
@@ -56,8 +57,6 @@ public class PrasanghaAdapter extends RecyclerView.Adapter<PrasanghaAdapter.Cust
     }
 
 
-    public void setPrasanghaOnItemClickListener(PrasanghaOnItemClickListener prasanghaOnItemClickListener) {
-    }
 
 
     class CustomViewHolder extends RecyclerView.ViewHolder {

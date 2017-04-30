@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.example.ganeshshetty.yakshanidhi.R;
 import com.example.ganeshshetty.yakshanidhi.adapters.PrasanghaAdapter;
 import com.example.ganeshshetty.yakshanidhi.details.PrasanghaDetailActivity;
-import com.example.ganeshshetty.yakshanidhi.itemclicklistener.PrasanghaOnItemClickListener;
 import com.example.ganeshshetty.yakshanidhi.model.Prasangha_class;
 
 import org.json.JSONArray;
@@ -121,14 +120,6 @@ public class PrasanghaFragment extends Fragment {
             if (result == 1) {
                 adapter = new PrasanghaAdapter(getContext(), prasangha_classList);
                 mRecyclerView.setAdapter(adapter);
-                adapter.setPrasanghaOnItemClickListener(new PrasanghaOnItemClickListener() {
-                    @Override
-                    public void onItemClick(Prasangha_class item) {
-                        Intent mainIntent = new Intent(getActivity(), PrasanghaDetailActivity.class);
-                        mainIntent.putExtra("Prasangha_model", item);
-                        startActivity(mainIntent);
-                    }
-                });
             } else {
                 Toast.makeText(getContext(), "Failed to fetch data!", Toast.LENGTH_SHORT).show();
             }

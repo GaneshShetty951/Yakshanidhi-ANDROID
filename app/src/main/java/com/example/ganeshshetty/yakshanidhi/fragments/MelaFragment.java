@@ -1,7 +1,6 @@
 package com.example.ganeshshetty.yakshanidhi.fragments;
 
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,8 +15,6 @@ import android.widget.Toast;
 
 import com.example.ganeshshetty.yakshanidhi.R;
 import com.example.ganeshshetty.yakshanidhi.adapters.MelaRecyclerViewAdapter;
-import com.example.ganeshshetty.yakshanidhi.details.MelaDetailActivity;
-import com.example.ganeshshetty.yakshanidhi.itemclicklistener.MelaOnItemClickListener;
 import com.example.ganeshshetty.yakshanidhi.model.Mela_class;
 
 import org.json.JSONArray;
@@ -128,14 +125,6 @@ public class MelaFragment extends Fragment {
             if (result == 1) {
                 adapter = new MelaRecyclerViewAdapter(getContext(), feedsList);
                 mRecyclerView.setAdapter(adapter);
-                adapter.setMelaOnItemClickListener(new MelaOnItemClickListener() {
-                    @Override
-                    public void onItemClick(Mela_class item) {
-                        Intent mainIntent=new Intent(getActivity(),MelaDetailActivity.class);
-                        mainIntent.putExtra("Mela_model",item);
-                        startActivity(mainIntent);
-                    }
-                });
             } else {
                 Toast.makeText(getContext(), "Failed to fetch data!", Toast.LENGTH_SHORT).show();
             }

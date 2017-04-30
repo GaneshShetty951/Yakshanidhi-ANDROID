@@ -7,7 +7,23 @@ import java.io.Serializable;
  */
 
 public class Artist_class implements Serializable {
-    String first_name,second_name,pic,type,place;
+    String first_name,second_name,pic,type,place,melaName,melaPic;
+
+    public String getMelaName() {
+        return melaName;
+    }
+
+    public void setMelaName(String melaName) {
+        this.melaName = melaName;
+    }
+
+    public String getMelaPic() {
+        return melaPic;
+    }
+
+    public void setMelaPic(String melaPic) {
+        this.melaPic = melaPic;
+    }
 
     public String getFirst_name() {
         return first_name;

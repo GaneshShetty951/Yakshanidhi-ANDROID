@@ -3,6 +3,7 @@ package com.example.ganeshshetty.yakshanidhi;
  * Author : Ganesh Shetty
  */
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -23,17 +24,27 @@ import com.example.ganeshshetty.yakshanidhi.fragments.MelaFragment;
 import com.example.ganeshshetty.yakshanidhi.fragments.PrasanghaFragment;
 import com.example.ganeshshetty.yakshanidhi.fragments.ShowFragment;
 
+import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private final SessionManager session = SessionManager.getInstance();
     NavigationView navigationView=null;
     Toolbar toolbar=null;
     Bundle savedInstanceState;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.savedInstanceState=savedInstanceState;
         setContentView(R.layout.activity_main);
         session.setContext(getApplicationContext());
+        if(getIntent().getExtras()!=null)
+        {
+            ShowFragment showFragment=new ShowFragment();
+            FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container,showFragment);
+            fragmentTransaction.commit();
+        }
 
         // Setting initial fragment
         MelaFragment melaFragment=new MelaFragment();
@@ -110,31 +121,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container,prasanghaFragment);
             fragmentTransaction.commit();
-
         } else if (id == R.id.nav_kalavidaru) {
             ArtistFragment artistFragment=new ArtistFragment();
             FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container,artistFragment);
             fragmentTransaction.commit();
-
         } else if (id == R.id.nav_pradarshana) {
             ShowFragment showFragment=new ShowFragment();
             FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container,showFragment);
             fragmentTransaction.commit();
-
         } else if (id == R.id.nav_kannada) {
-
+            Locale locale = new Locale("kn");
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+            session.setUserLang("kn");
         } else if (id == R.id.nav_english) {
-
-        }else if(id==R.id.logout)
-        {
+            Locale locale = new Locale("en");
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+            session.setUserLang("en");
+        }else if(id==R.id.logout) {
             session.logoutUser();
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 }

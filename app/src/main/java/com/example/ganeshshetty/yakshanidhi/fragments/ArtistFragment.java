@@ -1,7 +1,6 @@
 package com.example.ganeshshetty.yakshanidhi.fragments;
 
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,8 +15,6 @@ import android.widget.Toast;
 
 import com.example.ganeshshetty.yakshanidhi.R;
 import com.example.ganeshshetty.yakshanidhi.adapters.ArtistAdapter;
-import com.example.ganeshshetty.yakshanidhi.details.ArtistDetailActivity;
-import com.example.ganeshshetty.yakshanidhi.itemclicklistener.ArtistOnItemClickListener;
 import com.example.ganeshshetty.yakshanidhi.model.Artist_class;
 
 import org.json.JSONArray;
@@ -77,6 +74,8 @@ public class ArtistFragment extends Fragment {
                 item.setPic(post.optString("artist_pic"));
                 item.setType(post.optString("artist_type"));
                 item.setPlace(post.optString("artist_place"));
+                item.setMelaName(post.optString("mela_name"));
+                item.setMelaPic(post.optString("mela_pic"));
                 artist_classList.add(item);
             }
         } catch (JSONException e) {
@@ -126,14 +125,6 @@ public class ArtistFragment extends Fragment {
             if (result == 1) {
                 adapter = new ArtistAdapter(getContext(), artist_classList);
                 mRecyclerView.setAdapter(adapter);
-                adapter.setArtistOnItemClickListener(new ArtistOnItemClickListener() {
-                    @Override
-                    public void onItemClick(Artist_class item) {
-                        Intent mainIntent=new Intent(getActivity(),ArtistDetailActivity.class);
-                        mainIntent.putExtra("Artist_model",item);
-                        startActivity(mainIntent);
-                    }
-                });
             } else {
                 Toast.makeText(getContext(), "Failed to fetch data!", Toast.LENGTH_SHORT).show();
             }

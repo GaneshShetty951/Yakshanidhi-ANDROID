@@ -25,4 +25,5 @@
     <string name="email">ಇ-ಮೇಲ್</string>
     <string name="contact_no">ದೂರವಾಣಿ ಸಂಖ್</string>
     <string name="address">ವಿಳಾಸ</string>
+    <string name="mela_name_header">Mela name</string>
 </resources>

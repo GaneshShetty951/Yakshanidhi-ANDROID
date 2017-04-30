@@ -47,4 +47,7 @@
     <string name="address">Address</string>
     <string name="email">ಇ-ಮೇಲ್</string>
     <string name="contact_no">ದೂರವಾಣಿ ಸಂಖ್</string>
+    <string name="artist_name_header">artist_name</string>
+    <string name="mela_name_header">Mela name</string>
+    <string name="artist_place_val">artist_place</string>
 </resources>

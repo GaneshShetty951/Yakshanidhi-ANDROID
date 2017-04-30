@@ -6,13 +6,18 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ganeshshetty.yakshanidhi.R;
 import com.example.ganeshshetty.yakshanidhi.model.Mela_class;
+import com.squareup.picasso.Picasso;
 
 public class MelaDetailActivity extends AppCompatActivity {
     TextView emailView,contactView,addressView;
+    ImageView melaPic;
     @SuppressWarnings("ConstantConditions")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +31,9 @@ public class MelaDetailActivity extends AppCompatActivity {
         emailView.setText(mela_class.getEmail());
         contactView.setText(mela_class.getContact());
         addressView.setText(mela_class.getVillage()+"\n"+mela_class.getTaluk()+"\n"+mela_class.getDistrict()+"\n PIN-"+mela_class.getPinode());
-
+        melaPic=(ImageView)findViewById(R.id.bgheader);
+        Picasso.with(this).load(getString(R.string.url)+"/mela_images/"+mela_class.getThumbnail()).error(R.drawable.yakshanidhi).placeholder(R.drawable.yakshanidhi).into(melaPic);
+        Log.i("Activity",mela_class.getThumbnail());
         Toolbar toolbar = (Toolbar) findViewById(R.id.MyToolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -43,4 +50,18 @@ public class MelaDetailActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

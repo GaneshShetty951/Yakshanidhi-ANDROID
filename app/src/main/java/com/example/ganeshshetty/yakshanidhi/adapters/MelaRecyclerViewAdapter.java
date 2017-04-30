@@ -1,6 +1,7 @@
 package com.example.ganeshshetty.yakshanidhi.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
@@ -11,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ganeshshetty.yakshanidhi.R;
-import com.example.ganeshshetty.yakshanidhi.itemclicklistener.MelaOnItemClickListener;
+import com.example.ganeshshetty.yakshanidhi.details.MelaDetailActivity;
 import com.example.ganeshshetty.yakshanidhi.model.Mela_class;
 import com.squareup.picasso.Picasso;
 
@@ -24,7 +25,6 @@ import java.util.List;
 public class MelaRecyclerViewAdapter extends RecyclerView.Adapter<MelaRecyclerViewAdapter.CustomViewHolder> {
     private List<Mela_class> melaclassList;
     private Context mContext;
-    private MelaOnItemClickListener melaOnItemClickListener;
 
     public MelaRecyclerViewAdapter(Context context, List<Mela_class> melaclassList) {
         this.melaclassList = melaclassList;
@@ -52,16 +52,15 @@ public class MelaRecyclerViewAdapter extends RecyclerView.Adapter<MelaRecyclerVi
 
         //Setting text view title
         customViewHolder.textView.setText(Html.fromHtml(melaclass.getName()));
-
-
-        View.OnClickListener listener = new View.OnClickListener() {
+        customViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                melaOnItemClickListener.onItemClick(melaclass);
+                Intent mainIntent=new Intent(mContext,MelaDetailActivity.class);
+                mainIntent.putExtra("Mela_model",melaclass);
+                mContext.startActivity(mainIntent);
             }
-        };
-        customViewHolder.imageView.setOnClickListener(listener);
-        customViewHolder.textView.setOnClickListener(listener);
+        });
+
     }
 
     @Override
@@ -69,13 +68,6 @@ public class MelaRecyclerViewAdapter extends RecyclerView.Adapter<MelaRecyclerVi
         return (null != melaclassList ? melaclassList.size() : 0);
     }
 
-    public MelaOnItemClickListener getMelaOnItemClickListener() {
-        return melaOnItemClickListener;
-    }
-
-    public void setMelaOnItemClickListener(MelaOnItemClickListener melaOnItemClickListener) {
-        this.melaOnItemClickListener = melaOnItemClickListener;
-    }
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
         protected ImageView imageView;
