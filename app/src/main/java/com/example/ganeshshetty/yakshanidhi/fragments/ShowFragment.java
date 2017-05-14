@@ -107,6 +107,7 @@ public class ShowFragment extends Fragment {
             for (int i = 0; i < posts.length(); i++) {
                 JSONObject post = posts.optJSONObject(i);
                 Show_class item = new Show_class();
+                item.setShow_id(post.getInt("show_id"));
                 item.setShow_producer_name(post.getString("show_producer_name"));
                 item.setShow_date(post.getString("show_date"));
                 item.setShow_time(post.getString("show_time"));

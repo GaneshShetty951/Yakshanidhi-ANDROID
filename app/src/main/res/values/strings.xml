@@ -6,7 +6,7 @@
 
     <string name="action_settings">Settings</string>
 
-    <string name="url">http://192.168.0.101</string>
+    <string name="url">http://192.168.0.100</string>
     <string name="facebook_app_id">1381892598530208</string>
 
     <string name="fb_login_protocol_scheme">fb1381892598530208</string>
@@ -50,4 +50,8 @@
     <string name="artist_name_header">artist_name</string>
     <string name="mela_name_header">Mela name</string>
     <string name="artist_place_val">artist_place</string>
+    <string name="name">name</string>
+    <string name="time">time</string>
+    <string name="ccmment">Ccmment</string>
+    <string name="your_comment">your comment</string>
 </resources>

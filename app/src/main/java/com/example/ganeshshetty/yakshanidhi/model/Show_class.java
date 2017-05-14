@@ -7,6 +7,7 @@ import java.io.Serializable;
  */
 
 public class Show_class implements Serializable{
+    private int show_id;
     private String show_producer_name,show_date,show_time;
     private String contact1,contact2;
     private String village,taluk,district,pincode;
@@ -15,7 +16,8 @@ public class Show_class implements Serializable{
     public Show_class() {
     }
 
-    public Show_class(String show_producer_name, String show_date, String show_time, String contact1, String contact2, String village, String taluk, String district, String pincode, String mela_name, String mela_pic, String prasangha_name) {
+    public Show_class(int show_id, String show_producer_name, String show_date, String show_time, String contact1, String contact2, String village, String taluk, String district, String pincode, String mela_name, String mela_pic, String prasangha_name) {
+        this.show_id = show_id;
         this.show_producer_name = show_producer_name;
         this.show_date = show_date;
         this.show_time = show_time;
@@ -28,6 +30,14 @@ public class Show_class implements Serializable{
         this.mela_name = mela_name;
         this.mela_pic = mela_pic;
         this.prasangha_name = prasangha_name;
+    }
+
+    public int getShow_id() {
+        return show_id;
+    }
+
+    public void setShow_id(int show_id) {
+        this.show_id = show_id;
     }
 
     public String getShow_producer_name() {
