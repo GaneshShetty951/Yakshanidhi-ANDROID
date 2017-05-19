@@ -1,10 +1,14 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="match_parent">
+<android.support.design.widget.CoordinatorLayout
     android:fitsSystemWindows="true"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
     tools:context=".details.ShowActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -40,23 +44,24 @@
 
     </android.support.design.widget.AppBarLayout>
 
+
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="fill_vertical"
-        android:layout_below="@+id/MyAppbar"
+        android:id="@+id/scrollView"
+        android:layout_marginBottom="150dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingTop="24dp">
+            android:orientation="vertical">
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 app:cardUseCompatPadding="true">
 
                 <LinearLayout
@@ -154,22 +159,26 @@
     </android.support.v4.widget.NestedScrollView>
 
 
+
+</android.support.design.widget.CoordinatorLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
         android:weightSum="1">
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/editComment"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
             android:hint="@string/your_comment"
             android:layout_weight="0.9" />
         <Button
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="@drawable/rightcircle"
+            android:id="@+id/saveComment"
             android:layout_weight="0.1"/>
     </LinearLayout>
 </RelativeLayout>

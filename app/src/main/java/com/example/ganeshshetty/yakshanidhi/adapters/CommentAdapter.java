@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.example.ganeshshetty.yakshanidhi.R;
 import com.example.ganeshshetty.yakshanidhi.model.Comment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,6 +39,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CustomVi
         holder.nameText.setText(comment.getName());
         holder.timeText.setText(comment.getCommentedAt());
         holder.commentText.setText(comment.getCommentText());
+    }
+
+    public void add(ArrayList<Comment> datas){
+        comments.addAll(datas);
+        notifyDataSetChanged();
     }
 
     @Override

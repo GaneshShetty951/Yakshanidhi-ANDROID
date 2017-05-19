@@ -15,6 +15,7 @@ import java.util.HashMap;
  */
 public class SessionManager extends Activity {
     // User name (make variable public to access from outside)
+    public static final String KEY_ID="id";
     public static final String KEY_NAME = "name";
     // Email address (make variable public to access from outside)
     public static final String KEY_EMAIL = "email";
@@ -67,9 +68,11 @@ public class SessionManager extends Activity {
     /**
      * Create login session
      */
-    public void createLoginSession(String name, String email) {
+    public void createLoginSession(String name, String email,String id) {
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
+
+        editor.putString(KEY_ID,id);
 
         // Storing name in pref
         editor.putString(KEY_NAME, name);
@@ -107,7 +110,7 @@ public class SessionManager extends Activity {
         HashMap<String, String> user = new HashMap<String, String>();
         // user name
         user.put(KEY_NAME, pref.getString(KEY_NAME, null));
-
+        user.put(KEY_ID,pref.getString(KEY_ID,"1"));
         // user email id
         user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
 

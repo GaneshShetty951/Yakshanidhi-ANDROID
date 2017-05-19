@@ -15,6 +15,9 @@ import android.widget.TextView;
 import com.example.ganeshshetty.yakshanidhi.MainActivity;
 import com.example.ganeshshetty.yakshanidhi.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 import okhttp3.MediaType;
@@ -31,6 +34,7 @@ public class SignUpActivity extends AppCompatActivity {
     RelativeLayout relativeLayout;
     ProgressBar progressBar;
     private int RESPONCE_CODE;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +135,15 @@ public class SignUpActivity extends AppCompatActivity {
                 Response response = client.newCall(request).execute();
                 RESPONCE_CODE = response.code();
                 if (RESPONCE_CODE == 200) {
+                    try {
+                        JSONObject object=new JSONObject(response.body().toString());
+                        JSONObject resource=object.getJSONObject("resource");
+                        name=resource.getString("name");
+                        id=resource.getString("id");
+                        email=resource.getString("email");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     Snackbar snack = Snackbar.make(relativeLayout, "Welcome to Yakshanidhi", Snackbar.LENGTH_LONG);
                     snack.show();
                 } else {
@@ -149,7 +162,7 @@ public class SignUpActivity extends AppCompatActivity {
             progressBar.setVisibility(View.GONE);
             if (RESPONCE_CODE==200)
             {
-                session.createLoginSession(name,email);
+                session.createLoginSession(name,email,"1");
                 Intent intent=new Intent(SignUpActivity.this, MainActivity.class);
                 startActivity(intent);
             }

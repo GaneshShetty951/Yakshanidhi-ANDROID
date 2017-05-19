@@ -2,20 +2,28 @@ package com.example.ganeshshetty.yakshanidhi.details;
 
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ganeshshetty.yakshanidhi.R;
 import com.example.ganeshshetty.yakshanidhi.adapters.CommentAdapter;
+import com.example.ganeshshetty.yakshanidhi.authorisation.SessionManager;
 import com.example.ganeshshetty.yakshanidhi.fragments.MelaFragment;
 import com.example.ganeshshetty.yakshanidhi.model.Comment;
 import com.example.ganeshshetty.yakshanidhi.model.Show_class;
@@ -26,10 +34,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class ShowActivity extends AppCompatActivity {
     private ImageView melaImage;
@@ -43,11 +59,19 @@ public class ShowActivity extends AppCompatActivity {
     private String TAG="ShowActivity";
     private ArrayList<Comment> comments;
     private boolean isFirstTime=true;
+    private Button saveComment;
+    private EditText editComment;
+    private int RESPONCE_CODE;
+    private String comment_text;
+    private int show_id,user_id;
+    private final SessionManager session = SessionManager.getInstance();
+    private NestedScrollView scrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show);
+        session.setContext(getApplicationContext());
         show=(Show_class)getIntent().getSerializableExtra("show");
         toolbar=(Toolbar)findViewById(R.id.toolbar);
         melaImage=(ImageView)findViewById(R.id.bgheader);
@@ -59,6 +83,10 @@ public class ShowActivity extends AppCompatActivity {
         contact2=(TextView)findViewById(R.id.contact_2);
         addressText=(TextView)findViewById(R.id.address);
         commentRecycle=(RecyclerView)findViewById(R.id.commentRecycle);
+        saveComment=(Button)findViewById(R.id.saveComment);
+        saveComment.setEnabled(false);
+        editComment=(EditText)findViewById(R.id.editComment);
+        scrollView=(NestedScrollView)findViewById(R.id.scrollView);
         comments=new ArrayList<>();
         commentLayout=new LinearLayoutManager(this);
         String url=getString(R.string.url)+"/api/getComments/"+ Uri.encode(show.getPrasangha_name())+"/"+show.getShow_id();
@@ -79,6 +107,62 @@ public class ShowActivity extends AppCompatActivity {
         +show.getTaluk()+"\n"
         +show.getDistrict()+"\nPINCODE : "
         +show.getPincode());
+        editComment.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length()>0)
+                    saveComment.setEnabled(true);
+                else
+                    saveComment.setEnabled(false);
+            }
+        });
+        saveComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(editComment.getText().length()!=0)
+                {
+                    HashMap<String,String> user=session.getUserDetails();
+                    user_id=Integer.parseInt(user.get(SessionManager.KEY_ID));
+                    show_id=show.getShow_id();
+                    comment_text=editComment.getText().toString();
+                    new CommentSaveTask().execute(getString(R.string.url)+"/api/saveComments");
+                    editComment.setText("");
+                    saveComment.setEnabled(false);
+                }
+                else
+                {
+
+                }
+            }
+        });
+        commentRecycle.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                int last=commentLayout.findLastCompletelyVisibleItemPosition();
+                if (next_Url != null ) {
+                    if (last >= comments.size()-1) {
+                        new CommentLoadTask().execute(next_Url);
+                        isFirstTime=false;
+                        return;
+                    }
+                }
+            }
+        });
+    }
+
+    public void Commentrefresh()
+    {
+        new CommentLoadTask().execute(getString(R.string.url)+"/api/getComments/"+ Uri.encode(show.getPrasangha_name())+"/"+show.getShow_id());
     }
 
 
@@ -125,6 +209,10 @@ public class ShowActivity extends AppCompatActivity {
                     while ((line = r.readLine()) != null) {
                         response.append(line);
                     }
+                    if(isFirstTime)
+                    {
+                        comments.clear();
+                    }
                     parseResult(response.toString());
                     result = 1; // Successful
                 } else {
@@ -143,17 +231,19 @@ public class ShowActivity extends AppCompatActivity {
                 commentAdapter=new CommentAdapter(comments,ShowActivity.this);
                 commentRecycle.setLayoutManager(commentLayout);
                 commentRecycle.setAdapter(commentAdapter);
+                commentRecycle.setNestedScrollingEnabled(false);
                 isFirstTime=false;
             }
             else
             {
-
+                commentAdapter.add(comments);
             }
         }
     }
 
     private void parseResult(String s) {
         try {
+
             JSONObject response = new JSONObject(s);
             JSONObject posts = response.getJSONObject("posts");
                 next_Url = posts.getString("next_page_url");
@@ -173,6 +263,37 @@ public class ShowActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+    public class CommentSaveTask extends AsyncTask<String,Void,Void>
+    {
 
+        @Override
+        protected Void doInBackground(String... params) {
+            OkHttpClient client = new OkHttpClient();
 
+            MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+            RequestBody body = RequestBody.create(mediaType, "show_id="+show_id+"&user_id=" + user_id + "&comment=" +comment_text );
+            Request request = new Request.Builder()
+                    .url(params[0])
+                    .post(body)
+                    .addHeader("content-type", "application/x-www-form-urlencoded")
+                    .addHeader("cache-control", "no-cache")
+                    .build();
+            try {
+                Response response = client.newCall(request).execute();
+                RESPONCE_CODE = response.code();
+                if (RESPONCE_CODE == 200) {
+                    Log.i("comment saved",response.body().toString());
+                    isFirstTime=true;
+                    Commentrefresh();
+
+                } else {
+                    Log.i("comment unsaved",response.code()+"");
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
 }

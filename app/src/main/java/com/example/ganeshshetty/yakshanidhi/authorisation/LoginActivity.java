@@ -257,7 +257,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if (RESPONCE_CODE == 200) {
                 Snackbar snack = Snackbar.make(scrollView, "Welcome to Yakshanidhi", Snackbar.LENGTH_LONG);
                 snack.show();
-                session.createLoginSession(name,email);
+                try {
+                    JSONObject object=new JSONObject(response.body().toString());
+                    JSONObject resource=object.getJSONObject("resource");
+                    name=resource.getString("name");
+                    id=resource.getString("id");
+                    email=resource.getString("email");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                session.createLoginSession(name,email,id);
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
@@ -294,12 +303,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         try {
             Response response = client.newCall(request).execute();
+
             RESPONCE_CODE = response.code();
             if (RESPONCE_CODE == 200) {
                 try {
                     JSONObject object=new JSONObject(response.body().toString());
                     JSONObject resource=object.getJSONObject("resource");
                     name=resource.getString("name");
+                    id=resource.getString("id");
+                    email=resource.getString("email");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -366,7 +378,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         protected void onPostExecute(Void aVoid) {
             progressBar.setVisibility(View.GONE);
             if (RESPONCE_CODE == 200) {
-                session.createLoginSession(name,email);
+                session.createLoginSession(name,email,id);
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
