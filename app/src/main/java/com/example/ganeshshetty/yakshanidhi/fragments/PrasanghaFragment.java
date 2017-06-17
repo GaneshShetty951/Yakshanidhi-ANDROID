@@ -36,7 +36,7 @@ import java.util.List;
  */
 public class PrasanghaFragment extends Fragment {
     private static final String TAG = "RecyclerViewExample";
-    private List<Prasangha_class> prasangha_classList;
+    private List<Prasangha_class> prasangha_classList=new ArrayList<>();
     private RecyclerView mRecyclerView;
     private PrasanghaAdapter adapter;
     private ProgressBar progressBar;
@@ -52,10 +52,18 @@ public class PrasanghaFragment extends Fragment {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         progressBar = (ProgressBar)view.findViewById(R.id.progress_bar);
-
-        String url = getString(R.string.url) + "/api/v1/prasangha";
-        new DownloadTask().execute(url);
-
+        if(getActivity().getIntent().getSerializableExtra("data")!=null)
+        {
+            progressBar.setVisibility(View.GONE);
+            prasangha_classList= (ArrayList<Prasangha_class>) getActivity().getIntent().getSerializableExtra("data");
+            adapter = new PrasanghaAdapter(getContext(), prasangha_classList);
+            mRecyclerView.setAdapter(adapter);
+        }
+        else
+        {
+            String url = getString(R.string.url) + "/api/v1/prasangha";
+            new DownloadTask().execute(url);
+        }
         return view;
     }
 

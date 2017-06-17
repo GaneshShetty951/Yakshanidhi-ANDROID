@@ -52,11 +52,16 @@ public class ArtistFragment extends Fragment {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.artist_recyclerview);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
         progressBar = (ProgressBar)view.findViewById(R.id.progress_bar);
-
-
-        String url = getString(R.string.url) + "/api/v1/artist";
-        new DownloadTask().execute(url);
-
+        if(getActivity().getIntent().getSerializableExtra("data")!=null){
+            progressBar.setVisibility(View.GONE);
+            artist_classList= (ArrayList<Artist_class>) getActivity().getIntent().getSerializableExtra("data");
+            adapter = new ArtistAdapter(getContext(), artist_classList);
+            mRecyclerView.setAdapter(adapter);
+        }
+        else {
+            String url = getString(R.string.url) + "/api/v1/artist";
+            new DownloadTask().execute(url);
+        }
         return view;
     }
 

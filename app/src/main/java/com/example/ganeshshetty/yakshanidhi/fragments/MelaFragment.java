@@ -34,7 +34,7 @@ import java.util.List;
  */
 public class MelaFragment extends Fragment {
     private static final String TAG = "RecyclerViewExample";
-    private List<Mela_class> feedsList;
+    private List<Mela_class> feedsList=new ArrayList<>();
     private RecyclerView mRecyclerView;
     private MelaRecyclerViewAdapter adapter;
     private ProgressBar progressBar;
@@ -51,11 +51,16 @@ public class MelaFragment extends Fragment {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         progressBar = (ProgressBar)view.findViewById(R.id.progress_bar);
-
-
-        String url = getString(R.string.url) + "/api/v1/mela";
-        new DownloadTask().execute(url);
-
+        if(getActivity().getIntent().getStringExtra("name")!=null)
+        {
+            progressBar.setVisibility(View.GONE);
+            feedsList=(ArrayList<Mela_class>)getActivity().getIntent().getSerializableExtra("data");
+            adapter = new MelaRecyclerViewAdapter(getContext(),feedsList );
+            mRecyclerView.setAdapter(adapter);
+        }else {
+            String url = getString(R.string.url) + "/api/v1/mela";
+            new DownloadTask().execute(url);
+        }
         return view;
     }
 
@@ -126,7 +131,7 @@ public class MelaFragment extends Fragment {
                 adapter = new MelaRecyclerViewAdapter(getContext(), feedsList);
                 mRecyclerView.setAdapter(adapter);
             } else {
-                Toast.makeText(getContext(), "Failed to fetch data!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Failed to fetch data!", Toast.LENGTH_SHORT).show();
             }
         }
     }

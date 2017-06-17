@@ -3,6 +3,7 @@ package com.example.ganeshshetty.yakshanidhi;
  * Author : Ganesh Shetty
  */
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -23,7 +24,9 @@ import com.example.ganeshshetty.yakshanidhi.fragments.ArtistFragment;
 import com.example.ganeshshetty.yakshanidhi.fragments.MelaFragment;
 import com.example.ganeshshetty.yakshanidhi.fragments.PrasanghaFragment;
 import com.example.ganeshshetty.yakshanidhi.fragments.ShowFragment;
+import com.example.ganeshshetty.yakshanidhi.model.Mela_class;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -31,14 +34,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView=null;
     Toolbar toolbar=null;
     Bundle savedInstanceState;
-
+    String key;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.savedInstanceState=savedInstanceState;
         setContentView(R.layout.activity_main);
         session.setContext(getApplicationContext());
-        if(getIntent().getExtras()!=null)
+        if(getIntent().getStringExtra("name")!=null)
+        {
+            key=getIntent().getStringExtra("name");
+            callFragment();
+        }
+        else if(getIntent().getStringExtra("name")==null)
+        {
+            MelaFragment melaFragment=new MelaFragment();
+            FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container,melaFragment);
+            fragmentTransaction.commit();
+        }
+        else if(getIntent().getExtras()!=null)
         {
             ShowFragment showFragment=new ShowFragment();
             FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
@@ -47,10 +62,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         // Setting initial fragment
-        MelaFragment melaFragment=new MelaFragment();
-        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container,melaFragment);
-        fragmentTransaction.commit();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -73,6 +84,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void callFragment() {
+        if (key.equalsIgnoreCase("mela")) {
+            MelaFragment melaFragment = new MelaFragment();
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, melaFragment);
+            fragmentTransaction.commit();
+        }
+        else if (key.equalsIgnoreCase("artist"))
+        {
+            ArtistFragment artistFragment=new ArtistFragment();
+            FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container,artistFragment);
+            fragmentTransaction.commit();
+        }
+        else if(key.equalsIgnoreCase("prasangha"))
+        {
+            PrasanghaFragment prasanghaFragment=new PrasanghaFragment();
+            FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container,prasanghaFragment);
+            fragmentTransaction.commit();
+        }
+        else if(key.equalsIgnoreCase("show"))
+        {
+            ShowFragment showFragment=new ShowFragment();
+            FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container,showFragment);
+            fragmentTransaction.commit();
+        }
     }
 
     @Override
@@ -98,9 +139,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-
+        switch(id)
+        {
+            case R.id.action_search:
+                Intent intent=new Intent(this,SearchOptionActivity.class);
+                startActivity(intent);
+                break;
+        }
 
         return super.onOptionsItemSelected(item);
     }
