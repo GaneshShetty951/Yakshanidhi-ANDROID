@@ -24,12 +24,10 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:src="@drawable/search_show"
                     />
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:textAlignment="center"
+                    style="@style/searchText"
                     android:text="@string/search_shows"/>
             </LinearLayout>
             <LinearLayout
@@ -41,12 +39,10 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:src="@drawable/search_artsit"
                     />
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:textAlignment="center"
+                    style="@style/searchText"
                     android:text="@string/search_artist"/>
             </LinearLayout>
         </LinearLayout>
@@ -65,12 +61,10 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:src="@drawable/search_mela"
                     />
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:textAlignment="center"
+                    style="@style/searchText"
                     android:text="@string/search_mela"/>
             </LinearLayout>
             <LinearLayout
@@ -82,12 +76,10 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:src="@drawable/search_prasanga"
                     />
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:textAlignment="center"
+                    style="@style/searchText"
                     android:text="@string/search_prasangha"/>
             </LinearLayout>
         </LinearLayout>

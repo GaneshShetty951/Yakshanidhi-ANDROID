@@ -14,10 +14,10 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        app:srcCompat="@android:drawable/sym_def_app_icon" />
+        android:layout_width="80dp"
+        android:layout_height="120dp"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/yakshanidhi_logo" />
 
     <TextView
         android:layout_width="match_parent"

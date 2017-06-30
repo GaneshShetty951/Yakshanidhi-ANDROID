@@ -136,7 +136,7 @@ public class SignUpActivity extends AppCompatActivity {
                 RESPONCE_CODE = response.code();
                 if (RESPONCE_CODE == 200) {
                     try {
-                        JSONObject object=new JSONObject(response.body().toString());
+                        JSONObject object=new JSONObject(response.body().string().toString());
                         JSONObject resource=object.getJSONObject("resource");
                         name=resource.getString("name");
                         id=resource.getString("id");

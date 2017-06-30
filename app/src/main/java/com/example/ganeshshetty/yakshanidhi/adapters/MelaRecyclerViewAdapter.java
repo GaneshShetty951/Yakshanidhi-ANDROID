@@ -16,6 +16,7 @@ import com.example.ganeshshetty.yakshanidhi.details.MelaDetailActivity;
 import com.example.ganeshshetty.yakshanidhi.model.Mela_class;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -66,6 +67,11 @@ public class MelaRecyclerViewAdapter extends RecyclerView.Adapter<MelaRecyclerVi
     @Override
     public int getItemCount() {
         return (null != melaclassList ? melaclassList.size() : 0);
+    }
+
+    public void add(ArrayList<Mela_class> feeds) {
+        melaclassList.addAll(feeds);
+        notifyDataSetChanged();
     }
 
 

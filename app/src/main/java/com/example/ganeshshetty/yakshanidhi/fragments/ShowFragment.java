@@ -31,11 +31,13 @@ import java.util.ArrayList;
 public class ShowFragment extends Fragment {
 
 
-    private static final String TAG = "ShowFragment" ;
+    private static final String TAG = "ShowFragment";
     private ProgressBar progressBar;
     private RecyclerView mRecyclerView;
     private ArrayList<Show_class> shows;
     private ShowAdapter showAdapter;
+    private boolean isSearched = false;
+    private String nexturl;
 
     public ShowFragment() {
         // Required empty public constructor
@@ -48,13 +50,20 @@ public class ShowFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_show, container, false);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.show_recycle);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        progressBar = (ProgressBar)view.findViewById(R.id.progress_bar);
-
-        String url = getString(R.string.url) + "/api/v1/show";
-        new DownloadTask().execute(url);
-
+        progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
+        if (getActivity().getIntent().getSerializableExtra("data")!= null) {
+            isSearched=true;
+            progressBar.setVisibility(View.GONE);
+            shows= (ArrayList<Show_class>) getActivity().getIntent().getSerializableExtra("data");
+            showAdapter = new ShowAdapter(getContext(), shows);
+            mRecyclerView.setAdapter(showAdapter);
+        } else {
+            String url = getString(R.string.url) + "/api/v1/show";
+            new DownloadTask().execute(url);
+        }
         return view;
     }
+
     public class DownloadTask extends AsyncTask<String, Void, Integer> {
 
         @Override
@@ -93,10 +102,11 @@ public class ShowFragment extends Fragment {
         @Override
         protected void onPostExecute(Integer result) {
             progressBar.setVisibility(View.GONE);
-            showAdapter=new ShowAdapter(getContext(),shows);
+            showAdapter = new ShowAdapter(getContext(), shows);
             mRecyclerView.setAdapter(showAdapter);
         }
     }
+
 
     private void parseResult(String s) {
         try {

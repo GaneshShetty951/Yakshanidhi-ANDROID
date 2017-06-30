@@ -40,6 +40,11 @@ public class PrasanghaFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private PrasanghaAdapter adapter;
     private ProgressBar progressBar;
+    private LinearLayoutManager linearLayoutManager;
+    private boolean isSearched=false;
+    private Object nextUrl;
+    private String next_url;
+
     public PrasanghaFragment() {
         // Required empty public constructor
     }
@@ -50,10 +55,13 @@ public class PrasanghaFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_prasangha, container, false);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        linearLayoutManager=new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(linearLayoutManager);
         progressBar = (ProgressBar)view.findViewById(R.id.progress_bar);
         if(getActivity().getIntent().getSerializableExtra("data")!=null)
         {
+            isSearched=true;
+            next_url=getActivity().getIntent().getStringExtra("url");
             progressBar.setVisibility(View.GONE);
             prasangha_classList= (ArrayList<Prasangha_class>) getActivity().getIntent().getSerializableExtra("data");
             adapter = new PrasanghaAdapter(getContext(), prasangha_classList);
@@ -64,6 +72,19 @@ public class PrasanghaFragment extends Fragment {
             String url = getString(R.string.url) + "/api/v1/prasangha";
             new DownloadTask().execute(url);
         }
+        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if(linearLayoutManager.findLastCompletelyVisibleItemPosition()==prasangha_classList.size())
+                {
+                    if(isSearched && !next_url.equalsIgnoreCase("null")) {
+                        Toast.makeText(getActivity(), "scroll comming here", Toast.LENGTH_SHORT).show();
+                        new DownloadTask().execute(next_url);
+                    }
+                }
+            }
+        });
         return view;
     }
 
@@ -110,7 +131,11 @@ public class PrasanghaFragment extends Fragment {
                     while ((line = r.readLine()) != null) {
                         response.append(line);
                     }
-                    parseResult(response.toString());
+                    if(isSearched){
+                        parsePrasanghaResult(response.toString());
+                    }else {
+                        parseResult(response.toString());
+                    }
                     result = 1; // Successful
                 } else {
                     result = 0; //"Failed to fetch data!";
@@ -126,11 +151,35 @@ public class PrasanghaFragment extends Fragment {
             progressBar.setVisibility(View.GONE);
 
             if (result == 1) {
-                adapter = new PrasanghaAdapter(getContext(), prasangha_classList);
-                mRecyclerView.setAdapter(adapter);
+                if(!isSearched) {
+                    adapter = new PrasanghaAdapter(getContext(), prasangha_classList);
+                    mRecyclerView.setAdapter(adapter);
+                }
             } else {
                 Toast.makeText(getContext(), "Failed to fetch data!", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    private void parsePrasanghaResult(String s) {
+        try {
+            JSONObject response = new JSONObject(s);
+            JSONObject jsonObject=response.optJSONObject("posts");
+            JSONArray posts = jsonObject.optJSONArray("data");
+            nextUrl=jsonObject.opt("next_page_url");
+            ArrayList<Prasangha_class> prasangha_List = new ArrayList<>();
+
+            for (int i = 0; i < posts.length(); i++) {
+                JSONObject post = posts.optJSONObject(i);
+                Prasangha_class item = new Prasangha_class();
+                item.setName(post.optString("prasangha_name"));
+                item.setAuthor(post.optString("prasangha_author"));
+                item.setYear(post.optInt("prasangha_year"));
+                prasangha_List.add(item);
+            }
+            adapter.add(prasangha_List);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 

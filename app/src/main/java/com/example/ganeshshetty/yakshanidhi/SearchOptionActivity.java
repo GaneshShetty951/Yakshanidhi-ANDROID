@@ -1,5 +1,6 @@
 package com.example.ganeshshetty.yakshanidhi;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -21,6 +22,7 @@ import com.example.ganeshshetty.yakshanidhi.adapters.MelaRecyclerViewAdapter;
 import com.example.ganeshshetty.yakshanidhi.model.Artist_class;
 import com.example.ganeshshetty.yakshanidhi.model.Mela_class;
 import com.example.ganeshshetty.yakshanidhi.model.Prasangha_class;
+import com.example.ganeshshetty.yakshanidhi.model.Show_class;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,14 +33,18 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
-public class SearchOptionActivity extends AppCompatActivity {
+public class SearchOptionActivity extends AppCompatActivity  {
     LinearLayout showButton,artistButton,melaButton,prasanghaButton;
     ProgressBar progressBar;
     String div;
     private ArrayList<Mela_class> feedsList=new ArrayList<>();
     private ArrayList<Artist_class> artist_classList=new ArrayList<>();
     private ArrayList<Prasangha_class> prasangha_classList=new ArrayList<>();
+    private String next_url;
+    private ArrayList<Show_class> shows;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,19 +69,33 @@ public class SearchOptionActivity extends AppCompatActivity {
                 final Dialog dialog=new Dialog(SearchOptionActivity.this);
                 dialog.setContentView(R.layout.searchshow);
                 ImageView imageView=(ImageView)dialog.findViewById(R.id.image);
-                DatePicker editDate=(DatePicker) dialog.findViewById(R.id.editDate);
+                final TextView editDate=(TextView) dialog.findViewById(R.id.editDate);
                 final Button button=(Button)dialog.findViewById(R.id.submit);
                 button.setEnabled(false);
+                Calendar calendar=Calendar.getInstance();
+                final String[] date = new String[1];
+                final DatePickerDialog datePickerDialog = new DatePickerDialog(
+                        SearchOptionActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        date[0]=year+"-"+(((month/10)==0)?("0"+(month+1)):(month+1))+"-"+(((dayOfMonth/10)==0)?("0"+dayOfMonth):dayOfMonth);
+                        button.setEnabled(true);
+                        editDate.setText(date[0]);
+                    }
+                },calendar.get(Calendar.YEAR) ,calendar.get(Calendar.MONTH),calendar.get(Calendar.DATE));
                 editDate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        button.setEnabled(true);
+                       datePickerDialog.show();
                     }
                 });
+
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         dialog.dismiss();
+                        datePickerDialog.dismiss();
+                        new DownloadTask().execute(getString(R.string.url)+"/api/show/search/"+date[0].toString(),"show");
                     }
                 });
                 dialog.show();
@@ -193,6 +213,8 @@ public class SearchOptionActivity extends AppCompatActivity {
                     }else if(div.equalsIgnoreCase("prasangha"))
                     {
                         parsePrasanghaResult(response.toString());
+                    }else{
+                        parseShowresult(response.toString());
                     }
                     result = 1; // Successful
                 } else {
@@ -212,6 +234,7 @@ public class SearchOptionActivity extends AppCompatActivity {
                 if(div.equalsIgnoreCase("mela")) {
                     Intent intent = new Intent(SearchOptionActivity.this, MainActivity.class);
                     intent.putExtra("name", "mela");
+                    intent.putExtra("url",next_url);
                     intent.putExtra("data", feedsList);
                     startActivity(intent);
                 }
@@ -219,13 +242,21 @@ public class SearchOptionActivity extends AppCompatActivity {
                 {
                     Intent intent = new Intent(SearchOptionActivity.this, MainActivity.class);
                     intent.putExtra("name", "artist");
+                    intent.putExtra("url",next_url);
                     intent.putExtra("data", artist_classList);
                     startActivity(intent);
                 }else if(div.equalsIgnoreCase("prasangha"))
                 {
                     Intent intent = new Intent(SearchOptionActivity.this, MainActivity.class);
                     intent.putExtra("name", "prasangha");
+                    intent.putExtra("url",next_url);
                     intent.putExtra("data", prasangha_classList);
+                    startActivity(intent);
+                }else if(div.equalsIgnoreCase("show")){
+                    Intent intent = new Intent(SearchOptionActivity.this, MainActivity.class);
+                    intent.putExtra("name", "show");
+                    intent.putExtra("url",next_url);
+                    intent.putExtra("data", shows);
                     startActivity(intent);
                 }
             }
@@ -237,6 +268,33 @@ public class SearchOptionActivity extends AppCompatActivity {
     }
 
     private void parseShowresult(String s) {
+        try {
+            JSONObject response = new JSONObject(s);
+            JSONArray posts = response.optJSONArray("posts");
+            shows = new ArrayList<>();
+
+            for (int i = 0; i < posts.length(); i++) {
+                JSONObject post = posts.optJSONObject(i);
+                Show_class item = new Show_class();
+                item.setShow_id(post.getInt("show_id"));
+                item.setShow_producer_name(post.getString("show_producer_name"));
+                item.setShow_date(post.getString("show_date"));
+                item.setShow_time(post.getString("show_time"));
+                item.setContact1(post.getString("contact_1"));
+                item.setContact2(post.getString("contact_2"));
+                item.setVillage(post.getString("village"));
+                item.setTaluk(post.getString("taluk"));
+                item.setDistrict(post.getString("district"));
+                item.setPincode(post.getString("PINCODE"));
+                item.setMela_name(post.getString("mela_name"));
+                item.setMela_pic(post.getString("mela_pic"));
+                item.setPrasangha_name(post.getString("prasangha_name"));
+                shows.add(item);
+            }
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     private void parsePrasanghaResult(String s) {
@@ -244,6 +302,7 @@ public class SearchOptionActivity extends AppCompatActivity {
             JSONObject response = new JSONObject(s);
             JSONObject jsononject=response.optJSONObject("posts");
             JSONArray posts = jsononject.optJSONArray("data");
+            next_url=jsononject.optString("next_page_url");
             prasangha_classList = new ArrayList<Prasangha_class>();
 
             for (int i = 0; i < posts.length(); i++) {
@@ -263,6 +322,7 @@ public class SearchOptionActivity extends AppCompatActivity {
         try {
             JSONObject response = new JSONObject(s);
             JSONObject jsonobject=response.optJSONObject("posts");
+            next_url=jsonobject.optString("next_page_url");
             JSONArray posts = jsonobject.optJSONArray("data");
             artist_classList = new ArrayList<Artist_class>();
 
@@ -284,10 +344,10 @@ public class SearchOptionActivity extends AppCompatActivity {
     }
 
     private void parseMelaResult(String s) {
-        Toast.makeText(SearchOptionActivity.this, "Mela search data", Toast.LENGTH_SHORT).show();
         try {
             JSONObject response = new JSONObject(s);
             JSONObject object = response.optJSONObject("posts");
+            next_url=object.optString("next_page_url");
             JSONArray posts=object.optJSONArray("data");
             feedsList = new ArrayList<>();
 

@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(getIntent().getStringExtra("name")!=null)
         {
             key=getIntent().getStringExtra("name");
+            String next=getIntent().getStringExtra("url");
             callFragment();
         }
         else if(getIntent().getStringExtra("name")==null)
@@ -67,14 +68,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setTitle(getResources().getString(R.string.app_name));
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -176,21 +169,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container,showFragment);
             fragmentTransaction.commit();
-        } else if (id == R.id.nav_kannada) {
-            Locale locale = new Locale("kn");
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-            session.setUserLang("kn");
-        } else if (id == R.id.nav_english) {
-            Locale locale = new Locale("en");
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-            session.setUserLang("en");
-        }else if(id==R.id.logout) {
+        } else if(id==R.id.logout) {
             session.logoutUser();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

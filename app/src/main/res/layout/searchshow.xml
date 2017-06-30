@@ -7,10 +7,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/image"/>
-    <DatePicker
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:text="YYYY-MM-DD"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        android:padding="20dp"
         android:id="@+id/editDate"/>
     <Button
         android:layout_width="match_parent"

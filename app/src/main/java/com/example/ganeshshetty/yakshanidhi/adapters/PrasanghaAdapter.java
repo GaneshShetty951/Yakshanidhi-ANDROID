@@ -13,6 +13,7 @@ import com.example.ganeshshetty.yakshanidhi.R;
 import com.example.ganeshshetty.yakshanidhi.details.PrasanghaDetailActivity;
 import com.example.ganeshshetty.yakshanidhi.model.Prasangha_class;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -56,7 +57,10 @@ public class PrasanghaAdapter extends RecyclerView.Adapter<PrasanghaAdapter.Cust
         return (null != prasangha_list ? prasangha_list.size() : 0);
     }
 
-
+    public void add(ArrayList<Prasangha_class> prasangha_list) {
+        prasangha_list.addAll(prasangha_list);
+        notifyDataSetChanged();
+    }
 
 
     class CustomViewHolder extends RecyclerView.ViewHolder {

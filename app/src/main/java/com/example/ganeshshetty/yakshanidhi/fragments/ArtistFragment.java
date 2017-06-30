@@ -38,6 +38,9 @@ public class ArtistFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private ArtistAdapter adapter;
     private ProgressBar progressBar;
+    private GridLayoutManager gridLayoutManager;
+    private Boolean isSearched=false;
+    private String nexturl;
 
     public ArtistFragment() {
         // Required empty public constructor
@@ -50,10 +53,13 @@ public class ArtistFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_artist, container, false);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.artist_recyclerview);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+        gridLayoutManager = new GridLayoutManager(getContext(),2);
+        mRecyclerView.setLayoutManager(gridLayoutManager);
         progressBar = (ProgressBar)view.findViewById(R.id.progress_bar);
         if(getActivity().getIntent().getSerializableExtra("data")!=null){
+            isSearched=true;
             progressBar.setVisibility(View.GONE);
+            nexturl=getActivity().getIntent().getStringExtra("url");
             artist_classList= (ArrayList<Artist_class>) getActivity().getIntent().getSerializableExtra("data");
             adapter = new ArtistAdapter(getContext(), artist_classList);
             mRecyclerView.setAdapter(adapter);
@@ -62,6 +68,19 @@ public class ArtistFragment extends Fragment {
             String url = getString(R.string.url) + "/api/v1/artist";
             new DownloadTask().execute(url);
         }
+        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if(gridLayoutManager.findLastCompletelyVisibleItemPosition()==artist_classList.size());
+                {
+                    if(isSearched && !nexturl.equalsIgnoreCase("null")) {
+                        Toast.makeText(getActivity(), "Coming here artist", Toast.LENGTH_LONG).show();
+                        new DownloadTask().execute(nexturl);
+                    }
+                }
+            }
+        });
         return view;
     }
 
@@ -112,7 +131,11 @@ public class ArtistFragment extends Fragment {
                     while ((line = r.readLine()) != null) {
                         response.append(line);
                     }
-                    parseResult(response.toString());
+                    if(isSearched){
+                        parseSearchResult(response.toString());
+                    }else {
+                        parseResult(response.toString());
+                    }
                     result = 1; // Successful
                 } else {
                     result = 0; //"Failed to fetch data!";
@@ -127,12 +150,38 @@ public class ArtistFragment extends Fragment {
         protected void onPostExecute(Integer result) {
             progressBar.setVisibility(View.GONE);
 
-            if (result == 1) {
+            if (result == 1 && !isSearched) {
                 adapter = new ArtistAdapter(getContext(), artist_classList);
                 mRecyclerView.setAdapter(adapter);
             } else {
                 Toast.makeText(getContext(), "Failed to fetch data!", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    private void parseSearchResult(String s) {
+        try {
+            JSONObject response = new JSONObject(s);
+            JSONObject jsonObject=response.optJSONObject("posts");
+            nexturl=jsonObject.optString("next_page_url");
+            JSONArray posts = jsonObject.optJSONArray("data");
+            ArrayList<Artist_class> artist_List = new ArrayList<>();
+            for (int i = 0; i < posts.length(); i++) {
+                JSONObject post = posts.optJSONObject(i);
+                Artist_class item = new Artist_class();
+                item.setFirst_name(post.optString("artist_first_name"));
+                item.setSecond_name(post.optString("artist_second_name"));
+                item.setPic(post.optString("artist_pic"));
+                item.setType(post.optString("artist_type"));
+                item.setPlace(post.optString("artist_place"));
+                item.setMelaName(post.optString("mela_name"));
+                item.setMelaPic(post.optString("mela_pic"));
+                artist_List.add(item);
+            }
+            adapter.swap(artist_List);
+            progressBar.setVisibility(View.GONE);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 }

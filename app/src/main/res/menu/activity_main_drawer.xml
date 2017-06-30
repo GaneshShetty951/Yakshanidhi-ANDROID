@@ -19,19 +19,6 @@
             android:icon="@drawable/ic_menu_manage"
             android:title="Show" />
     </group>
-
-    <item android:title="Language">
-        <menu>
-            <item
-                android:id="@+id/nav_kannada"
-                android:icon="@drawable/ic_menu_share"
-                android:title="ಕನ್ನಡ" />
-            <item
-                android:id="@+id/nav_english"
-                android:icon="@drawable/ic_menu_send"
-                android:title="English" />
-        </menu>
-    </item>
     <group>
         <item
             android:id="@+id/logout"

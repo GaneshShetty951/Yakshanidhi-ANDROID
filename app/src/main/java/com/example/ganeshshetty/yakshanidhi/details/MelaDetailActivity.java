@@ -1,17 +1,20 @@
 package com.example.ganeshshetty.yakshanidhi.details;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ganeshshetty.yakshanidhi.R;
+import com.example.ganeshshetty.yakshanidhi.SearchOptionActivity;
 import com.example.ganeshshetty.yakshanidhi.model.Mela_class;
 import com.squareup.picasso.Picasso;
 
@@ -56,8 +59,18 @@ public class MelaDetailActivity extends AppCompatActivity {
         {
             case android.R.id.home:finish();
                 break;
+            case R.id.action_search:
+                Intent intent=new Intent(this,SearchOptionActivity.class);
+                startActivity(intent);
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
     }
 
     @Override

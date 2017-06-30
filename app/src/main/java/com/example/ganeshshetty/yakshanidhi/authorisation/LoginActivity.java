@@ -241,7 +241,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void socialLogin(String provider, String id, String displayName, String email) {
         OkHttpClient client = new OkHttpClient();
-
+        Response response = null;
         MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
         RequestBody body = RequestBody.create(mediaType, "email=" + email + "&id="+id+"&name="+displayName+"&provider="+provider);
         Request request = new Request.Builder()
@@ -252,21 +252,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .build();
 
         try {
-            Response response = client.newCall(request).execute();
+            response = client.newCall(request).execute();
+
             RESPONCE_CODE = response.code();
             if (RESPONCE_CODE == 200) {
                 Snackbar snack = Snackbar.make(scrollView, "Welcome to Yakshanidhi", Snackbar.LENGTH_LONG);
                 snack.show();
                 try {
-                    JSONObject object=new JSONObject(response.body().toString());
+                    String s=response.body().string().toString();
+                    JSONObject object=new JSONObject(s);
                     JSONObject resource=object.getJSONObject("resource");
-                    name=resource.getString("name");
-                    id=resource.getString("id");
-                    email=resource.getString("email");
+                    name=resource.optString("name");
+                    String ids=resource.optString("id");
+                    email=resource.optString("email");
+                    session.createLoginSession(name,email,ids);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                session.createLoginSession(name,email,id);
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
@@ -274,10 +276,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Snackbar snack = Snackbar.make(scrollView, "Credentials do not match", Snackbar.LENGTH_LONG);
                 snack.show();
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
     }
 
     private void loginToServer() {
@@ -307,7 +309,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             RESPONCE_CODE = response.code();
             if (RESPONCE_CODE == 200) {
                 try {
-                    JSONObject object=new JSONObject(response.body().toString());
+                    JSONObject object=new JSONObject(response.body().string().toString());
                     JSONObject resource=object.getJSONObject("resource");
                     name=resource.getString("name");
                     id=resource.getString("id");

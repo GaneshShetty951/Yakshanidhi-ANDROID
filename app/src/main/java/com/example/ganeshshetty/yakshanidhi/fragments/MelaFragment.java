@@ -38,7 +38,9 @@ public class MelaFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private MelaRecyclerViewAdapter adapter;
     private ProgressBar progressBar;
-
+    private boolean isSearched=false;
+    private String nextUrl;
+    private LinearLayoutManager linearlayout;
     public MelaFragment() {
         // Required empty public constructor
     }
@@ -49,11 +51,14 @@ public class MelaFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mela, container, false);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        linearlayout=new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(linearlayout);
         progressBar = (ProgressBar)view.findViewById(R.id.progress_bar);
         if(getActivity().getIntent().getStringExtra("name")!=null)
         {
             progressBar.setVisibility(View.GONE);
+            isSearched=true;
+            nextUrl=getActivity().getIntent().getStringExtra("url");
             feedsList=(ArrayList<Mela_class>)getActivity().getIntent().getSerializableExtra("data");
             adapter = new MelaRecyclerViewAdapter(getContext(),feedsList );
             mRecyclerView.setAdapter(adapter);
@@ -61,6 +66,17 @@ public class MelaFragment extends Fragment {
             String url = getString(R.string.url) + "/api/v1/mela";
             new DownloadTask().execute(url);
         }
+        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if(linearlayout.findLastCompletelyVisibleItemPosition()==feedsList.size()) {
+                    if (isSearched && !nextUrl.equalsIgnoreCase("null")) {
+                        new DownloadTask().execute(nextUrl);
+                    }
+                }
+            }
+        });
         return view;
     }
 
@@ -112,7 +128,14 @@ public class MelaFragment extends Fragment {
                     while ((line = r.readLine()) != null) {
                         response.append(line);
                     }
-                    parseResult(response.toString());
+                    if(isSearched)
+                    {
+                        parseMelaResult(response.toString());
+                    }
+                    else
+                    {
+                        parseResult(response.toString());
+                    }
                     result = 1; // Successful
                 } else {
                     result = 0; //"Failed to fetch data!";
@@ -128,11 +151,41 @@ public class MelaFragment extends Fragment {
             progressBar.setVisibility(View.GONE);
 
             if (result == 1) {
-                adapter = new MelaRecyclerViewAdapter(getContext(), feedsList);
-                mRecyclerView.setAdapter(adapter);
+                if(!isSearched) {
+                    adapter = new MelaRecyclerViewAdapter(getContext(), feedsList);
+                    mRecyclerView.setAdapter(adapter);
+                }
             } else {
                 Toast.makeText(getActivity(), "Failed to fetch data!", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    private void parseMelaResult(String s) {
+        try {
+            JSONObject response = new JSONObject(s);
+            JSONObject jsonObject=response.optJSONObject("posts");
+            nextUrl=jsonObject.optString("next_page_url");
+            JSONArray posts = jsonObject.optJSONArray("data");
+            ArrayList<Mela_class> feeds = new ArrayList<>();
+
+            for (int i = 0; i < posts.length(); i++) {
+                JSONObject post = posts.optJSONObject(i);
+                Mela_class item = new Mela_class();
+                item.setName(post.optString("mela_name"));
+                item.setThumbnail(post.optString("mela_pic"));
+                item.setEmail(post.optString("mela_email"));
+                item.setContact(post.optString("contact"));
+                item.setVillage(post.optString("village"));
+                item.setTaluk(post.optString("taluk"));
+                item.setDistrict(post.optString("district"));
+                item.setPinode(post.optString("PINCODE"));
+                feeds.add(item);
+            }
+            feedsList.addAll(feeds);
+            adapter.add(feeds);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 }

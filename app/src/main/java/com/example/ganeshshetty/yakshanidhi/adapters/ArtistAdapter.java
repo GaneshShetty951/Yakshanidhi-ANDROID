@@ -16,6 +16,7 @@ import com.example.ganeshshetty.yakshanidhi.details.ArtistDetailActivity;
 import com.example.ganeshshetty.yakshanidhi.model.Artist_class;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ import java.util.List;
  */
 
 public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.CustomViewHolder>{
-    private List<Artist_class> artist_classList;
+    private List<Artist_class> artist_classList=new ArrayList<>();
     private Context pContext;
 
     public ArtistAdapter(Context context, List<Artist_class> artist_classList) {
@@ -64,6 +65,11 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.CustomView
     @Override
     public int getItemCount() {
         return artist_classList.size();
+    }
+
+    public void swap(ArrayList<Artist_class> artist_List) {
+        artist_classList.addAll(artist_List);
+        notifyDataSetChanged();
     }
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
